@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSFiddle g4x2ezbk</title>
+
+  <style>
+    body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #16191d;
+  color: #f0f0f0;
+  padding: 20px;
+}
+
+.bovenbalk {
+  max-width: 820px;
+  margin: 0 auto 20px auto;
+  background-color: #20252b;
+  border-bottom: 3px solid #c9a227;
+  padding: 15px 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.bovenbalk h1 {
+  margin: 0;
+  font-size: 22px;
+  color: #c9a227;
+}
+
+.bovenbalk p {
+  margin: 0;
+  font-size: 14px;
+  color: #cccccc;
+}
+
+.container {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.speelveld {
+  flex: 1 1 340px;
+  background-color: #145230;
+  border: 2px solid #c9a227;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.statistieken-blok {
+  flex: 1 1 320px;
+  background-color: #20252b;
+  border: 1px solid #383e47;
+  border-top: 3px solid #c9a227;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+h2 {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 8px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #e0e0e0;
+}
+
+input, select {
+  width: 100%;
+  padding: 9px;
+  margin-bottom: 12px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background-color: #0e1712;
+  color: #ffffff;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.inzet-overzicht {
+  background-color: rgba(0, 0, 0, 0.35);
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  color: #f5d76e;
+  margin-bottom: 15px;
+}
+
+.knoppen-groep {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+button {
+  padding: 10px 8px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.knop-geel { background-color: #e0b422; color: #111; }
+.knop-blauw { background-color: #2b6cb0; color: #fff; }
+.knop-groen { background-color: #2f855a; color: #fff; }
+.knop-rood { background-color: #c53030; color: #fff; }
+
+.uitslag-vak {
+  margin-top: 16px;
+  background-color: rgba(0, 0, 0, 0.35);
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.nummer-bol {
+  display: inline-block;
+  width: 46px;
+  height: 46px;
+  line-height: 46px;
+  border-radius: 50%;
+  border: 2px solid #c9a227;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #222;
+  margin-bottom: 8px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.stat-kaart {
+  background-color: #292f36;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.stat-kaart.breed {
+  grid-column: span 2;
+}
+
+.stat-kaart span {
+  display: block;
+  font-size: 12px;
+  color: #a0aec0;
+  margin-bottom: 4px;
+}
+
+.stat-kaart strong {
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.knop-download {
+  width: 100%;
+  margin-top: 14px;
+  background-color: #c9a227;
+  color: #111;
+  padding: 11px;
+}
+
+  </style>
+
+  
+</head>
+<body>
+  <div class="bovenbalk">
+  <h1>Roulette Simulator</h1>
+  <p>Gemaakt door Aaron Heilig &amp; Noah Posthuma</p>
+</div>
+
+<div class="container">
+  <div class="speelveld">
+    <h2>Inzetten</h2>
+
+    <label for="inzet">Inzet per vak (€)</label>
+    <input type="number" id="inzet" value="10" min="1">
+
+    <label for="kleur">Kies een kleur</label>
+    <select id="kleur">
+      <option value="geen">Geen kleur (alleen op getallen)</option>
+      <option value="red" selected>Rood (1:1)</option>
+      <option value="black">Zwart (1:1)</option>
+    </select>
+
+    <label for="getallen">Kies getallen (0 t/m 36, bijv. 7, 14, 21)</label>
+    <input type="text" id="getallen" placeholder="bijv. 7, 14, 21">
+
+    <div class="inzet-overzicht" id="info">Gekozen: Rood | Totale inzet: €10</div>
+
+    <div class="knoppen-groep">
+      <button type="button" id="btn1" class="knop-geel">1x draaien</button>
+      <button type="button" id="btn100" class="knop-blauw">100x</button>
+      <button type="button" id="btn1000" class="knop-blauw">1.000x</button>
+      <button type="button" id="btn10000" class="knop-blauw">10.000x</button>
+      <button type="button" id="bAuto" class="knop-groen">Auto-spin</button>
+      <button type="button" id="btnReset" class="knop-rood">Reset</button>
+    </div>
+
+    <div class="uitslag-vak">
+      <div class="nummer-bol" id="bal">-</div>
+      <div id="tekst">Klik op een knop om te beginnen</div>
+    </div>
+  </div>
+
+  <div class="statistieken-blok">
+    <h2>Statistieken</h2>
+    <div class="stats-grid">
+      <div class="stat-kaart">
+        <span>Balans</span>
+        <strong>Oneindig</strong>
+      </div>
+      <div class="stat-kaart">
+        <span>Netto resultaat</span>
+        <strong id="netto">€0</strong>
+      </div>
+      <div class="stat-kaart">
+        <span>Aantal spins</span>
+        <strong id="spins">0</strong>
+      </div>
+      <div class="stat-kaart">
+        <span>Winpercentage</span>
+        <strong id="wr">0%</strong>
+      </div>
+      <div class="stat-kaart">
+        <span>Gewonnen / Verloren</span>
+        <strong><span id="w">0</span> / <span id="v">0</span></strong>
+      </div>
+      <div class="stat-kaart">
+        <span>Hoogste / Laagste</span>
+        <strong><span id="piek">€0</span> / <span id="dal">€0</span></strong>
+      </div>
+      <div class="stat-kaart breed">
+        <span>Rood / Zwart / Groen (0)</span>
+        <strong><span id="r">0</span> / <span id="z">0</span> / <span id="g">0</span></strong>
+      </div>
+      <div class="stat-kaart breed">
+        <span>Laatste getallen</span>
+        <strong id="hist">-</strong>
+      </div>
+    </div>
+
+    <button type="button" id="btnDl" class="knop-download">Statistieken opslaan (.txt)</button>
+  </div>
+</div>
+
+
+  <script>
+    var netto = 0;
+var spins = 0;
+var winstAantal = 0;
+var verliesAantal = 0;
+var roodAantal = 0;
+var zwartAantal = 0;
+var groenAantal = 0;
+var hoogstePunt = 0;
+var laagstePunt = 0;
+var autoTimer = null;
+var geschiedenis = "";
+
+function checkRood(getal) {
+  return getal === 1 || getal === 3 || getal === 5 || getal === 7 || getal === 9 ||
+         getal === 12 || getal === 14 || getal === 16 || getal === 18 || getal === 19 ||
+         getal === 21 || getal === 23 || getal === 25 || getal === 27 || getal === 30 ||
+         getal === 32 || getal === 34 || getal === 36;
+}
+
+function leesGetallen() {
+  var invoer = document.getElementById("getallen").value;
+  var gevonden = "";
+  var teller = 0;
+  var tijdelijk = "";
+
+  for (var i = 0; i <= invoer.length; i++) {
+    var teken = invoer.charAt(i);
+    if (teken >= "0" && teken <= "9") {
+      tijdelijk += teken;
+    } else if (tijdelijk !== "") {
+      var nummer = Number(tijdelijk);
+      if (nummer >= 0 && nummer <= 36) {
+        var code = "|" + nummer + "|";
+        if (gevonden.indexOf(code) === -1) {
+          gevonden += code;
+          teller++;
+        }
+      }
+      tijdelijk = "";
+    }
+  }
+  return { codes: gevonden, aantal: teller };
+}
+
+function updateOverzicht() {
+  var gekozenKleur = document.getElementById("kleur").value;
+  var getallenData = leesGetallen();
+  var inzetBedrag = Number(document.getElementById("inzet").value) || 10;
+  var tekst = "";
+  var vakken = 0;
+
+  if (gekozenKleur === "red") {
+    tekst += "Rood";
+    vakken++;
+  }
+  if (gekozenKleur === "black") {
+    tekst += "Zwart";
+    vakken++;
+  }
+
+  if (getallenData.aantal > 0) {
+    var lijst = getallenData.codes.replace(/\|\|/g, ", ").replace(/\|/g, "");
+    tekst += (tekst !== "" ? " + " : "") + "Getallen (" + lijst + ")";
+    vakken += getallenData.aantal;
+  }
+
+  var infoVeld = document.getElementById("info");
+  if (vakken === 0) {
+    infoVeld.innerText = "Gekozen: Geen inzet geselecteerd";
+  } else {
+    infoVeld.innerText = "Gekozen: " + tekst + " | Totale inzet: €" + (vakken * inzetBedrag);
+  }
+}
+
+function stopAutoSpin() {
+  if (autoTimer !== null) {
+    clearInterval(autoTimer);
+    autoTimer = null;
+    document.getElementById("bAuto").innerText = "Auto-spin";
+  }
+}
+
+function draaiRondes(aantalKeer) {
+  var inzetBedrag = Number(document.getElementById("inzet").value) || 10;
+  var gekozenKleur = document.getElementById("kleur").value;
+  var getallenData = leesGetallen();
+  var kleurIngezet = (gekozenKleur === "red" || gekozenKleur === "black") ? 1 : 0;
+  var totaleInzet = (kleurIngezet + getallenData.aantal) * inzetBedrag;
+
+  if (totaleInzet <= 0) {
+    stopAutoSpin();
+    document.getElementById("tekst").innerText = "Kies eerst een kleur of vul een getal in.";
+    return;
+  }
+
+  var laatsteGetal = 0;
+  var laatsteKleur = "black";
+  var laatsteResultaat = 0;
+  var reeksNetto = 0;
+
+  for (var i = 0; i < aantalKeer; i++) {
+    var gevallenGetal = Math.floor(Math.random() * 37);
+    var gevallenKleur = gevallenGetal === 0 ? "green" : (checkRood(gevallenGetal) ? "red" : "black");
+
+    spins++;
+    if (gevallenKleur === "red") roodAantal++;
+    else if (gevallenKleur === "black") zwartAantal++;
+    else groenAantal++;
+
+    var uitbetaling = 0;
+    if (gevallenKleur === gekozenKleur) uitbetaling += inzetBedrag * 2;
+    if (getallenData.codes.indexOf("|" + gevallenGetal + "|") !== -1) uitbetaling += inzetBedrag * 36;
+
+    var winstOfVerlies = uitbetaling - totaleInzet;
+    netto += winstOfVerlies;
+    reeksNetto += winstOfVerlies;
+
+    if (winstOfVerlies > 0) {
+      winstAantal++;
+      if (netto > hoogstePunt) hoogstePunt = netto;
+    } else if (winstOfVerlies < 0) {
+      verliesAantal++;
+      if (netto < laagstePunt) laagstePunt = netto;
+    }
+
+    geschiedenis = gevallenGetal + (geschiedenis !== "" ? ", " + geschiedenis : "");
+    if (geschiedenis.length > 30) geschiedenis = geschiedenis.substring(0, 30);
+
+    laatsteGetal = gevallenGetal;
+    laatsteKleur = gevallenKleur;
+    laatsteResultaat = winstOfVerlies;
+  }
+
+  var bol = document.getElementById("bal");
+  bol.innerText = laatsteGetal;
+  if (laatsteKleur === "red") bol.style.backgroundColor = "#c53030";
+  else if (laatsteKleur === "green") bol.style.backgroundColor = "#2f855a";
+  else bol.style.backgroundColor = "#1a202c";
+
+  var melding = document.getElementById("tekst");
+  if (aantalKeer === 1) {
+    melding.innerText = "Getal " + laatsteGetal + " -> " + (laatsteResultaat >= 0 ? "Winst: +€" + laatsteResultaat : "Verlies: -€" + Math.abs(laatsteResultaat));
+    melding.style.color = laatsteResultaat > 0 ? "#68d391" : (laatsteResultaat < 0 ? "#fc8181" : "#f5d76e");
+  } else {
+    melding.innerText = aantalKeer + "x gedraaid -> Resultaat: " + (reeksNetto >= 0 ? "+€" + reeksNetto : "-€" + Math.abs(reeksNetto));
+    melding.style.color = reeksNetto > 0 ? "#68d391" : (reeksNetto < 0 ? "#fc8181" : "#f5d76e");
+  }
+
+  var nettoTekst = document.getElementById("netto");
+  nettoTekst.innerText = (netto >= 0 ? "+€" : "-€") + Math.abs(netto);
+  nettoTekst.style.color = netto >= 0 ? "#68d391" : "#fc8181";
+
+  document.getElementById("spins").innerText = spins;
+  document.getElementById("wr").innerText = ((winstAantal / spins) * 100).toFixed(1) + "%";
+  document.getElementById("w").innerText = winstAantal;
+  document.getElementById("v").innerText = verliesAantal;
+  document.getElementById("piek").innerText = "+€" + hoogstePunt;
+  document.getElementById("dal").innerText = "-€" + Math.abs(laagstePunt);
+  document.getElementById("r").innerText = roodAantal;
+  document.getElementById("z").innerText = zwartAantal;
+  document.getElementById("g").innerText = groenAantal;
+  document.getElementById("hist").innerText = geschiedenis;
+}
+
+document.getElementById("inzet").addEventListener("input", updateOverzicht);
+document.getElementById("kleur").addEventListener("change", updateOverzicht);
+document.getElementById("getallen").addEventListener("input", updateOverzicht);
+
+document.getElementById("btn1").addEventListener("click", function() { stopAutoSpin(); draaiRondes(1); });
+document.getElementById("btn100").addEventListener("click", function() { stopAutoSpin(); draaiRondes(100); });
+document.getElementById("btn1000").addEventListener("click", function() { stopAutoSpin(); draaiRondes(1000); });
+document.getElementById("btn10000").addEventListener("click", function() { stopAutoSpin(); draaiRondes(10000); });
+
+document.getElementById("bAuto").addEventListener("click", function() {
+  if (autoTimer !== null) {
+    stopAutoSpin();
+  } else {
+    draaiRondes(1);
+    autoTimer = setInterval(function() { draaiRondes(1); }, 50);
+    document.getElementById("bAuto").innerText = "Stop";
+  }
+});
+
+document.getElementById("btnReset").addEventListener("click", function() {
+  stopAutoSpin();
+  netto = 0; spins = 0; winstAantal = 0; verliesAantal = 0;
+  roodAantal = 0; zwartAantal = 0; groenAantal = 0;
+  hoogstePunt = 0; laagstePunt = 0; geschiedenis = "";
+
+  document.getElementById("bal").innerText = "-";
+  document.getElementById("bal").style.backgroundColor = "#222";
+  document.getElementById("netto").innerText = "€0";
+  document.getElementById("netto").style.color = "#ffffff";
+  document.getElementById("spins").innerText = "0";
+  document.getElementById("wr").innerText = "0%";
+  document.getElementById("w").innerText = "0";
+  document.getElementById("v").innerText = "0";
+  document.getElementById("piek").innerText = "€0";
+  document.getElementById("dal").innerText = "€0";
+  document.getElementById("r").innerText = "0";
+  document.getElementById("z").innerText = "0";
+  document.getElementById("g").innerText = "0";
+  document.getElementById("hist").innerText = "-";
+  document.getElementById("tekst").innerText = "Statistieken gewist";
+  document.getElementById("tekst").style.color = "#ffffff";
+});
+
+document.getElementById("btnDl").addEventListener("click", function() {
+  var winPerc = spins > 0 ? ((winstAantal / spins) * 100).toFixed(1) + "%" : "0%";
+  var inhoud = "Roulette Simulator - Statistieken%0D%0A" +
+    "Gemaakt door Aaron Heilig & Noah Posthuma%0D%0A%0D%0A" +
+    "Netto resultaat: " + (netto >= 0 ? "+€" : "-€") + Math.abs(netto) + "%0D%0A" +
+    "Aantal spins: " + spins + "%0D%0A" +
+    "Winpercentage: " + winPerc + "%0D%0A" +
+    "Gewonnen: " + winstAantal + " | Verloren: " + verliesAantal + "%0D%0A" +
+    "Hoogste punt: +€" + hoogstePunt + " | Laagste punt: -€" + Math.abs(laagstePunt) + "%0D%0A" +
+    "Rood: " + roodAantal + " | Zwart: " + zwartAantal + " | Groen: " + groenAantal;
+
+  var link = document.createElement("a");
+  link.href = "data:text/plain;charset=utf-8," + inhoud;
+  link.download = "roulette-statistieken.txt";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});
+
+  </script>
+</body>
+</html>
